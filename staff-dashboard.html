@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - Bijoy 24 Hall</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">B24</div>
+                <h1>Bijoy 24 Hall - Staff Portal</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="staff-dashboard.html">Dashboard</a></li>
+                <li><a href="#" onclick="staffLogout()" class="btn-login">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Staff Dashboard Section -->
+    <section class="dashboard-section">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Welcome, <span id="staffName">Staff Member</span>!</h1>
+                <p>Role: <span id="staffRole" class="role-badge">Staff</span></p>
+            </div>
+
+            <!-- Staff Quick Stats -->
+            <div class="dashboard-stats">
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon">📋</div>
+                    <h3 id="pendingApplications">0</h3>
+                    <p>Pending Applications</p>
+                </div>
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon">✅</div>
+                    <h3 id="approvedApplications">0</h3>
+                    <p>Approved Applications</p>
+                </div>
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon">👥</div>
+                    <h3 id="totalStudents">528</h3>
+                    <p>Total Capacity</p>
+                </div>
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon">🛏️</div>
+                    <h3 id="occupiedRooms">0</h3>
+                    <p>Occupied Rooms</p>
+                </div>
+            </div>
+
+            <!-- Management Actions -->
+            <div class="dashboard-actions">
+                <h2>Management Actions</h2>
+                <div class="action-grid">
+                    <a href="#applications" class="action-card" onclick="showApplications()">
+                        <div class="action-icon">📋</div>
+                        <h3>Review Applications</h3>
+                        <p>View and approve admission applications</p>
+                    </a>
+                    <a href="#seat-management" class="action-card" onclick="showSeatManagement()">
+                        <div class="action-icon">🛏️</div>
+                        <h3>Seat Management</h3>
+                        <p>Allocate rooms to students</p>
+                    </a>
+                    <a href="#complaints" class="action-card" onclick="showComplaints()">
+                        <div class="action-icon">📝</div>
+                        <h3>Complaints</h3>
+                        <p>View and resolve student complaints</p>
+                    </a>
+                    <a href="#dining-management" class="action-card" onclick="showDiningManagement()">
+                        <div class="action-icon">🍽️</div>
+                        <h3>Dining Management</h3>
+                        <p>Manage menu and approve pricing</p>
+                    </a>
+                    <a href="#staff-management" class="action-card" onclick="showStaffManagement()">
+                        <div class="action-icon">👔</div>
+                        <h3>Staff Management</h3>
+                        <p>Manage hall staff and schedules</p>
+                    </a>
+                    <a href="#notices" class="action-card" onclick="showNotices()">
+                        <div class="action-icon">📢</div>
+                        <h3>Post Notices</h3>
+                        <p>Create and publish announcements</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Applications Section -->
+            <div class="dashboard-section-card" id="applicationsSection">
+                <div class="section-header">
+                    <h2>Admission Applications</h2>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" onclick="filterApplications('all')">All</button>
+                        <button class="filter-btn" onclick="filterApplications('pending')">Pending</button>
+                        <button class="filter-btn" onclick="filterApplications('approved')">Approved</button>
+                        <button class="filter-btn" onclick="filterApplications('rejected')">Rejected</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>App ID</th>
+                                <th>Name</th>
+                                <th>Reg. No</th>
+                                <th>Department</th>
+                                <th>CGPA</th>
+                                <th>Quota</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationsTableBody">
+                            <tr>
+                                <td colspan="8" class="no-data">No applications found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Seat Allocation Section -->
+            <div class="dashboard-section-card" id="seatAllocationSection" style="display: none;">
+                <h2>Seat Allocation Management</h2>
+                <div class="seat-allocation-form">
+                    <form onsubmit="allocateSeat(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="allocateStudentReg">Student Registration No *</label>
+                                <input type="text" id="allocateStudentReg" required placeholder="Enter reg. no">
+                            </div>
+                            <div class="form-group">
+                                <label for="allocateRoomNo">Room Number *</label>
+                                <input type="number" id="allocateRoomNo" required min="1" max="132" placeholder="1-132">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="allocateBedNo">Bed Number *</label>
+                                <select id="allocateBedNo" required>
+                                    <option value="">Select Bed</option>
+                                    <option value="1">Bed 1</option>
+                                    <option value="2">Bed 2</option>
+                                    <option value="3">Bed 3</option>
+                                    <option value="4">Bed 4</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="allocateFloor">Floor *</label>
+                                <select id="allocateFloor" required>
+                                    <option value="">Select Floor</option>
+                                    <option value="Ground">Ground Floor</option>
+                                    <option value="1st">1st Floor</option>
+                                    <option value="2nd">2nd Floor</option>
+                                    <option value="3rd">3rd Floor</option>
+                                    <option value="4th">4th Floor</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Allocate Seat</button>
+                    </form>
+                </div>
+
+                <h3>Current Room Allocations</h3>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Room No</th>
+                                <th>Floor</th>
+                                <th>Bed 1</th>
+                                <th>Bed 2</th>
+                                <th>Bed 3</th>
+                                <th>Bed 4</th>
+                                <th>Occupancy</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roomAllocationTableBody">
+                            <tr>
+                                <td colspan="7" class="no-data">No allocations found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Complaints Section -->
+            <div class="dashboard-section-card" id="complaintsSection" style="display: none;">
+                <h2>Student Complaints</h2>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student</th>
+                                <th>Room</th>
+                                <th>Category</th>
+                                <th>Issue</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="complaintsTableBody">
+                            <tr>
+                                <td colspan="8" class="no-data">No complaints found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Detail Modal -->
+    <div id="applicationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Application Details</h2>
+            <div id="applicationDetails"></div>
+            <div class="modal-actions">
+                <button class="btn btn-success" onclick="approveApplication()">✓ Approve</button>
+                <button class="btn btn-danger" onclick="rejectApplication()">✗ Reject</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="staff-dashboard.js"></script>
+</body>
+</html>

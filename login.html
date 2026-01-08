@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bijoy 24 Hall</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">B24</div>
+                <h1>Bijoy 24 Hall</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Login Selection Section -->
+    <section class="auth-section">
+        <div class="login-selection">
+            <h1>Welcome to Bijoy 24 Hall</h1>
+            <p class="selection-subtitle">Please select your login type</p>
+            
+            <div class="login-type-cards">
+                <div class="login-type-card" onclick="window.location.href='student-login.html'">
+                    <div class="login-type-icon">🎓</div>
+                    <h3>Student Login</h3>
+                    <p>Access your student account, apply for admission, view room allocation</p>
+                    <a href="student-dashboard.html"><button class="btn btn-primary">Login as Student</button></a>
+                </div>
+
+                <div class="login-type-card" onclick="window.location.href='staff-login.html'">
+                    <div class="login-type-icon">👔</div>
+                    <h3>Hall Office Staff</h3>
+                    <p>Manage hall operations, review applications, handle complaints</p>
+                    <a href="staff-dashboard.html"><button class="btn btn-primary">Login as Staff</button></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

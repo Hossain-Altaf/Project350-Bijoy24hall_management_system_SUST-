@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Bijoy 24 Hall</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">B24</div>
+                <h1>Bijoy 24 Hall</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="#" onclick="logout()" class="btn-login">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard-section">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Welcome, <span id="userName">Student</span>!</h1>
+                <p>Manage your hall activities and applications</p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="dashboard-stats">
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon">📋</div>
+                    <h3 id="applicationStatus">No Application</h3>
+                    <p>Application Status</p>
+                </div>
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon">🛏️</div>
+                    <h3 id="roomNumber">Not Allocated</h3>
+                    <p>Room Number</p>
+                </div>
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon">💰</div>
+                    <h3 id="feeStatus">Pending</h3>
+                    <p>Fee Status</p>
+                </div>
+                <div class="dash-stat-card">
+                    <div class="dash-stat-icon">🎫</div>
+                    <h3 id="hallCard">Not Issued</h3>
+                    <p>Hall Card</p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="dashboard-actions">
+                <h2>Quick Actions</h2>
+                <div class="action-grid">
+                    <a href="admission.html" class="action-card">
+                        <div class="action-icon">🎓</div>
+                        <h3>Apply for Admission</h3>
+                        <p>Submit your hall admission application</p>
+                    </a>
+                    <a href="seat-allocation.html" class="action-card">
+                        <div class="action-icon">🛏️</div>
+                        <h3>Seat Allocation</h3>
+                        <p>Check your room allocation status</p>
+                    </a>
+                    <a href="complaints.html" class="action-card">
+                        <div class="action-icon">📝</div>
+                        <h3>Submit Complaint</h3>
+                        <p>Report any issues or concerns</p>
+                    </a>
+                    <a href="dining.html" class="action-card">
+                        <div class="action-icon">🍽️</div>
+                        <h3>Dining Menu</h3>
+                        <p>View today's dining menu</p>
+                    </a>
+                    <a href="sports.html" class="action-card">
+                        <div class="action-icon">🏆</div>
+                        <h3>Book Sports Equipment</h3>
+                        <p>Reserve equipment for games</p>
+                    </a>
+                    <a href="library.html" class="action-card">
+                        <div class="action-icon">📚</div>
+                        <h3>Reading Room</h3>
+                        <p>Book a reading room seat</p>
+                    </a>
+                    <a href="guest-room.html" class="action-card">
+                        <div class="action-icon">🏨</div>
+                        <h3>Guest Room</h3>
+                        <p>Book guest room for visitors</p>
+                    </a>
+                    <a href="laundry.html" class="action-card">
+                        <div class="action-icon">🧺</div>
+                        <h3>Laundry Service</h3>
+                        <p>Access washing machines</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Application Status -->
+            <div class="dashboard-section-card" id="applicationSection" style="display:none;">
+                <h2>Your Application</h2>
+                <div class="application-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Application ID:</span>
+                        <span class="detail-value" id="appId">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Registration No:</span>
+                        <span class="detail-value" id="appRegNo">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Department:</span>
+                        <span class="detail-value" id="appDept">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Session:</span>
+                        <span class="detail-value" id="appSession">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Application Date:</span>
+                        <span class="detail-value" id="appDate">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status:</span>
+                        <span class="detail-value status-badge" id="appStatusDetail">Pending</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Notices -->
+            <div class="dashboard-section-card">
+                <h2>Recent Notices</h2>
+                <div class="notice-list">
+                    <div class="notice-item-dash">
+                        <span class="notice-date-dash">Jan 09, 2026</span>
+                        <p>Seat allocation for Spring 2026 semester will begin from January 15, 2026</p>
+                    </div>
+                    <div class="notice-item-dash">
+                        <span class="notice-date-dash">Jan 08, 2026</span>
+                        <p>Updated dining menu for January has been approved by the provost</p>
+                    </div>
+                    <div class="notice-item-dash">
+                        <span class="notice-date-dash">Jan 05, 2026</span>
+                        <p>Inter-hall sports tournament registration is now open until January 20</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Bijoy 24 Hall. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

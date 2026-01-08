@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Bijoy 24 Hall</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">B24</div>
+                <h1>Bijoy 24 Hall</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html" class="active-nav">Dashboard</a></li>
+                <li><a href="#" id="studentNameNav">Profile</a></li>
+                <li><a href="#" onclick="logout()" class="btn-login">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Student Dashboard Section -->
+    <section class="dashboard-section">
+        <div class="dashboard-container">
+            <!-- Welcome Header -->
+            <div class="dashboard-header">
+                <div class="welcome-info">
+                    <h1>Welcome back, <span id="userName">Student</span>! 👋</h1>
+                    <p class="student-details">
+                        <span id="regNoDisplay">Reg: -</span> | 
+                        <span id="deptDisplay">Department: -</span> | 
+                        <span id="sessionDisplay">Session: -</span>
+                    </p>
+                </div>
+                <div class="profile-badge">
+                    <div class="profile-avatar">
+                        <span id="userInitial">S</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats Cards -->
+            <div class="dashboard-stats">
+                <div class="dash-stat-card stat-purple">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <p class="stat-label">Application Status</p>
+                            <h3 id="applicationStatus">Not Applied</h3>
+                        </div>
+                        <div class="stat-icon">📋</div>
+                    </div>
+                </div>
+                <div class="dash-stat-card stat-blue">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <p class="stat-label">Room Number</p>
+                            <h3 id="roomNumber">Not Allocated</h3>
+                        </div>
+                        <div class="stat-icon">🛏️</div>
+                    </div>
+                </div>
+                <div class="dash-stat-card stat-green">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <p class="stat-label">Fee Status</p>
+                            <h3 id="feeStatus">Pending</h3>
+                        </div>
+                        <div class="stat-icon">💰</div>
+                    </div>
+                </div>
+                <div class="dash-stat-card stat-orange">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <p class="stat-label">Hall Card</p>
+                            <h3 id="hallCard">Not Issued</h3>
+                        </div>
+                        <div class="stat-icon">🎫</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="dashboard-main-grid">
+                <!-- Left Column -->
+                <div class="dashboard-left">
+                    <!-- Quick Actions -->
+                    <div class="dashboard-section-card">
+                        <h2>Quick Actions</h2>
+                        <div class="quick-actions-grid">
+                            <a href="admission.html" class="quick-action-item">
+                                <div class="action-icon-circle purple">🎓</div>
+                                <div class="action-text">
+                                    <h4>Apply for Admission</h4>
+                                    <p>Submit application</p>
+                                </div>
+                            </a>
+                            <a href="complaints.html" class="quick-action-item">
+                                <div class="action-icon-circle red">📝</div>
+                                <div class="action-text">
+                                    <h4>Submit Complaint</h4>
+                                    <p>Report issues</p>
+                                </div>
+                            </a>
+                            <a href="dining.html" class="quick-action-item">
+                                <div class="action-icon-circle green">🍽️</div>
+                                <div class="action-text">
+                                    <h4>Dining Menu</h4>
+                                    <p>View today's menu</p>
+                                </div>
+                            </a>
+                            <a href="library.html" class="quick-action-item">
+                                <div class="action-icon-circle blue">📚</div>
+                                <div class="action-text">
+                                    <h4>Reading Room</h4>
+                                    <p>Book a seat</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Application Details -->
+                    <div class="dashboard-section-card" id="applicationSection" style="display:none;">
+                        <h2>Your Application Details</h2>
+                        <div class="application-info-card">
+                            <div class="info-row">
+                                <span class="info-label">Application ID</span>
+                                <span class="info-value" id="appId">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Registration No</span>
+                                <span class="info-value" id="appRegNo">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Department</span>
+                                <span class="info-value" id="appDept">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Session</span>
+                                <span class="info-value" id="appSession">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">CGPA</span>
+                                <span class="info-value" id="appCGPA">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Applied Quota</span>
+                                <span class="info-value" id="appQuota">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Application Date</span>
+                                <span class="info-value" id="appDate">-</span>
+                            </div>
+                            <div class="info-row highlight">
+                                <span class="info-label">Status</span>
+                                <span class="info-value">
+                                    <span class="status-badge" id="appStatusDetail">Pending</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Room Details -->
+                    <div class="dashboard-section-card" id="roomSection" style="display:none;">
+                        <h2>Room Allocation Details</h2>
+                        <div class="room-info-card">
+                            <div class="room-visual">
+                                <div class="room-icon-large">🏠</div>
+                                <h3>Room <span id="roomNo">-</span></h3>
+                                <p id="floorInfo">-</p>
+                            </div>
+                            <div class="room-details-grid">
+                                <div class="room-detail-item">
+                                    <span class="detail-icon">🛏️</span>
+                                    <div>
+                                        <p class="detail-label">Bed Number</p>
+                                        <p class="detail-value" id="bedNo">-</p>
+                                    </div>
+                                </div>
+                                <div class="room-detail-item">
+                                    <span class="detail-icon">👥</span>
+                                    <div>
+                                        <p class="detail-label">Capacity</p>
+                                        <p class="detail-value">4 Students</p>
+                                    </div>
+                                </div>
+                                <div class="room-detail-item">
+                                    <span class="detail-icon">🪑</span>
+                                    <div>
+                                        <p class="detail-label">Facilities</p>
+                                        <p class="detail-value">Bed, Table, Chair, Almirah</p>
+                                    </div>
+                                </div>
+                                <div class="room-detail-item">
+                                    <span class="detail-icon">📅</span>
+                                    <div>
+                                        <p class="detail-label">Allocated On</p>
+                                        <p class="detail-value" id="allocationDate">-</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="dashboard-right">
+                    <!-- Hall Services -->
+                    <div class="dashboard-section-card">
+                        <h2>Hall Services</h2>
+                        <div class="services-list">
+                            <a href="sports.html" class="service-item">
+                                <div class="service-icon">🏆</div>
+                                <div class="service-info">
+                                    <h4>Sports & Recreation</h4>
+                                    <p>Book equipment</p>
+                                </div>
+                                <span class="service-arrow">→</span>
+                            </a>
+                            <a href="guest-room.html" class="service-item">
+                                <div class="service-icon">🏨</div>
+                                <div class="service-info">
+                                    <h4>Guest Room</h4>
+                                    <p>Book for visitors</p>
+                                </div>
+                                <span class="service-arrow">→</span>
+                            </a>
+                            <a href="laundry.html" class="service-item">
+                                <div class="service-icon">🧺</div>
+                                <div class="service-info">
+                                    <h4>Laundry Service</h4>
+                                    <p>Washing machines</p>
+                                </div>
+                                <span class="service-arrow">→</span>
+                            </a>
+                            <a href="vending.html" class="service-item">
+                                <div class="service-icon">🥤</div>
+                                <div class="service-info">
+                                    <h4>Vending Machine</h4>
+                                    <p>24/7 snacks</p>
+                                </div>
+                                <span class="service-arrow">→</span>
+                            </a>
+                            <a href="stationary.html" class="service-item">
+                                <div class="service-icon">✏️</div>
+                                <div class="service-info">
+                                    <h4>Stationary Shop</h4>
+                                    <p>Educational supplies</p>
+                                </div>
+                                <span class="service-arrow">→</span>
+                            </a>
+                            <a href="communication.html" class="service-item">
+                                <div class="service-icon">💬</div>
+                                <div class="service-info">
+                                    <h4>Communication Groups</h4>
+                                    <p>Join WhatsApp/Messenger</p>
+                                </div>
+                                <span class="service-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Latest Notices -->
+                    <div class="dashboard-section-card">
+                        <h2>Latest Notices 📢</h2>
+                        <div class="notices-timeline">
+                            <div class="notice-timeline-item">
+                                <div class="notice-dot"></div>
+                                <div class="notice-content">
+                                    <span class="notice-date-small">Jan 09, 2026</span>
+                                    <h4>Seat Allocation Notice</h4>
+                                    <p>Seat allocation for Spring 2026 semester begins from January 15, 2026</p>
+                                </div>
+                            </div>
+                            <div class="notice-timeline-item">
+                                <div class="notice-dot"></div>
+                                <div class="notice-content">
+                                    <span class="notice-date-small">Jan 08, 2026</span>
+                                    <h4>Dining Menu Update</h4>
+                                    <p>Updated menu for January approved by provost</p>
+                                </div>
+                            </div>
+                            <div class="notice-timeline-item">
+                                <div class="notice-dot"></div>
+                                <div class="notice-content">
+                                    <span class="notice-date-small">Jan 05, 2026</span>
+                                    <h4>Sports Tournament</h4>
+                                    <p>Inter-hall tournament registration open until January 20</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="index.html#notices" class="view-all-link">View All Notices →</a>
+                    </div>
+
+                    <!-- Important Contacts -->
+                    <div class="dashboard-section-card">
+                        <h2>Important Contacts 📞</h2>
+                        <div class="contacts-list">
+                            <div class="contact-card">
+                                <div class="contact-icon">👨‍💼</div>
+                                <div class="contact-info">
+                                    <h4>Provost</h4>
+                                    <p>Dr. Ahmed Rahman</p>
+                                    <a href="tel:+8801711111111">📞 +880-1711-111111</a>
+                                </div>
+                            </div>
+                            <div class="contact-card">
+                                <div class="contact-icon">🏢</div>
+                                <div class="contact-info">
+                                    <h4>Hall Office</h4>
+                                    <p>Executive Officer</p>
+                                    <a href="tel:+8808217XXXXX">📞 +880-821-7XXXXX</a>
+                                </div>
+                            </div>
+                            <div class="contact-card">
+                                <div class="contact-icon">🚨</div>
+                                <div class="contact-info">
+                                    <h4>Emergency</h4>
+                                    <p>Security Guard</p>
+                                    <a href="tel:999">📞 999</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Bijoy 24 Hall. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
