@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Complaint - Bijoy 24 Hall</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">B24</div>
+                <h1>Bijoy 24 Hall</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="#" onclick="logout()" class="btn-login">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Complaints Section -->
+    <section class="page-section">
+        <div class="page-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-icon">📝</div>
+                <h1>Complaint & Report System</h1>
+                <p>Report any issues or concerns to the hall office</p>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="complaints-grid">
+                <!-- Left: Submit Complaint Form -->
+                <div class="complaint-form-section">
+                    <div class="section-card">
+                        <h2>Submit New Complaint</h2>
+                        <p class="section-subtitle">Fill out the form below to report your issue</p>
+
+                        <form id="complaintForm" onsubmit="submitComplaint(event)">
+                            <!-- Student Info (Auto-filled) -->
+                            <div class="form-group">
+                                <label>Your Name</label>
+                                <input type="text" id="studentName" readonly>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Registration Number</label>
+                                    <input type="text" id="studentReg" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Room Number</label>
+                                    <input type="text" id="studentRoom" placeholder="Enter room number" required>
+                                </div>
+                            </div>
+
+                            <!-- Complaint Category -->
+                            <div class="form-group">
+                                <label for="complaintCategory">Complaint Category *</label>
+                                <select id="complaintCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Electrical">Electrical Issue</option>
+                                    <option value="Plumbing">Plumbing/Water Issue</option>
+                                    <option value="Furniture">Furniture Damage</option>
+                                    <option value="Cleanliness">Cleanliness Issue</option>
+                                    <option value="Internet">Internet/Wi-Fi Problem</option>
+                                    <option value="Security">Security Concern</option>
+                                    <option value="Noise">Noise Complaint</option>
+                                    <option value="Dining">Dining/Cafeteria Issue</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Priority Level -->
+                            <div class="form-group">
+                                <label for="priority">Priority Level *</label>
+                                <select id="priority" required>
+                                    <option value="">Select Priority</option>
+                                    <option value="Low">Low - Can wait a few days</option>
+                                    <option value="Medium">Medium - Needs attention soon</option>
+                                    <option value="High">High - Urgent issue</option>
+                                    <option value="Critical">Critical - Emergency</option>
+                                </select>
+                            </div>
+
+                            <!-- Complaint Title -->
+                            <div class="form-group">
+                                <label for="complaintTitle">Complaint Title *</label>
+                                <input type="text" id="complaintTitle" required placeholder="Brief description of the issue">
+                            </div>
+
+                            <!-- Detailed Description -->
+                            <div class="form-group">
+                                <label for="complaintDetails">Detailed Description *</label>
+                                <textarea id="complaintDetails" rows="5" required placeholder="Provide detailed information about the issue..."></textarea>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="form-group">
+                                <label for="location">Specific Location</label>
+                                <input type="text" id="location" placeholder="e.g., Room 101, 2nd Floor Bathroom">
+                            </div>
+
+                            <!-- Attach Photo (Optional) -->
+                            <div class="form-group">
+                                <label for="complaintPhoto">Attach Photo (Optional)</label>
+                                <input type="file" id="complaintPhoto" accept="image/*">
+                                <p class="helper-text">Upload a photo if it helps explain the issue</p>
+                            </div>
+
+                            <!-- Contact Preference -->
+                            <div class="form-group">
+                                <label for="contactPhone">Contact Phone Number *</label>
+                                <input type="tel" id="contactPhone" required placeholder="01XXXXXXXXX">
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary btn-block">Submit Complaint</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right: Your Complaints & Guidelines -->
+                <div class="complaint-info-section">
+                    <!-- Your Previous Complaints -->
+                    <div class="section-card">
+                        <h2>Your Complaints</h2>
+                        <div id="complaintsList" class="complaints-list">
+                            <div class="empty-state-small">
+                                <p>No complaints submitted yet</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guidelines -->
+                    <div class="section-card guidelines-card">
+                        <h3>Guidelines for Submitting Complaints</h3>
+                        <ul class="guidelines-list">
+                            <li>✓ Be specific and clear about the issue</li>
+                            <li>✓ Provide your room number accurately</li>
+                            <li>✓ Select the correct category for faster resolution</li>
+                            <li>✓ Attach photos if applicable</li>
+                            <li>✓ Set appropriate priority level</li>
+                            <li>✓ Check complaint status regularly</li>
+                        </ul>
+                    </div>
+
+                    <!-- Expected Response Time -->
+                    <div class="section-card response-time-card">
+                        <h3>Expected Response Time</h3>
+                        <div class="response-times">
+                            <div class="time-item critical">
+                                <span class="time-label">Critical</span>
+                                <span class="time-value">1-2 hours</span>
+                            </div>
+                            <div class="time-item high">
+                                <span class="time-label">High</span>
+                                <span class="time-value">Same day</span>
+                            </div>
+                            <div class="time-item medium">
+                                <span class="time-label">Medium</span>
+                                <span class="time-value">1-2 days</span>
+                            </div>
+                            <div class="time-item low">
+                                <span class="time-label">Low</span>
+                                <span class="time-value">3-5 days</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="emergency-contact-card">
+                        <div class="emergency-icon">🚨</div>
+                        <h3>Emergency?</h3>
+                        <p>For urgent matters, call the hall office directly:</p>
+                        <a href="tel:+8808217XXXXX" class="emergency-number">+880-821-7XXXXX</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Bijoy 24 Hall. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="complains.js"></script>
+</body>
+</html>

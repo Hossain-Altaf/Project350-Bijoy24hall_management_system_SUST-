@@ -119,13 +119,15 @@ nav {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, rgba(101, 122, 216, 0.6) 0%, rgba(123, 92, 154, 0.6) 10%),
+                url('imgs/hall2.jpg') center/cover no-repeat;
     color: white;
     padding: 150px 5% 100px;
     text-align: center;
     position: relative;
     overflow: hidden;
     margin-top: 70px;
+    background-attachment: fixed;
 }
 
 .hero::before {
@@ -146,16 +148,19 @@ nav {
     z-index: 1;
 }
 
-.hero h2 {
-    font-size: 3rem;
+.hero h1 {
+    font-size: 4rem;
     margin-bottom: 1rem;
     animation: fadeInUp 1s ease;
+    color: #140505;
 }
 
 .hero p {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin-bottom: 2rem;
     animation: fadeInUp 1.2s ease;
+    color:#ede8e8;
+    font-weight: 550;
 }
 
 .cta-buttons {
@@ -180,7 +185,9 @@ nav {
 
 .btn-primary {
     background: white;
-    color: #667eea;
+    color: #0b0d15;
+    font-size:1.2rem;
+    font-weight: 700;
 }
 
 .btn-primary:hover {
@@ -190,8 +197,9 @@ nav {
 
 .btn-secondary {
     background: transparent;
-    color: white;
+    color: rgb(27, 7, 7);
     border: 2px solid white;
+    font-size:1.2rem;
 }
 
 .btn-secondary:hover {
@@ -1366,5 +1374,19 @@ footer {
     
     .auth-container {
         padding: 1.5rem;
+    }
+
+    .welcome-info h1 {
+        font-size: 1.5rem;
+    }
+    
+    .profile-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .dashboard-stats {
+        grid-template-columns: 1fr;
     }
 }
