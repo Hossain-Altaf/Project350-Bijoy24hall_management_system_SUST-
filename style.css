@@ -119,9 +119,9 @@ nav {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, rgba(101, 122, 216, 0.6) 0%, rgba(123, 92, 154, 0.6) 10%),
+    background: linear-gradient(135deg, rgba(101, 122, 216, 0.6) 0%, rgba(67, 55, 78, 0.6) 20%),
                 url('imgs/hall2.jpg') center/cover no-repeat;
-    color: white;
+    color: rgb(21, 14, 14);
     padding: 150px 5% 100px;
     text-align: center;
     position: relative;
