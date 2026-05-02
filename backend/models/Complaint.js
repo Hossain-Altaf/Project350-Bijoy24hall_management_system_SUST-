@@ -6,21 +6,41 @@ const complaintSchema = new mongoose.Schema({
     ref: 'Student',
     required: true
   },
-  title: { type: String, required: true },
-  description: { type: String, required: true },
+
+  title: {
+    type: String,
+    required: true
+  },
+
+  description: {
+    type: String,
+    required: true
+  },
+
+  // ✅ FIX: free text category (no restriction)
   category: {
     type: String,
-    enum: ['maintenance', 'food', 'cleanliness', 'security', 'other'],
-    default: 'other'
+    required: true
   },
+
   status: {
     type: String,
     enum: ['pending', 'in_progress', 'resolved', 'rejected'],
     default: 'pending'
   },
-  adminNote: { type: String },
-  resolvedAt: { type: Date },
-  createdAt: { type: Date, default: Date.now }
+
+  adminNote: {
+    type: String
+  },
+
+  resolvedAt: {
+    type: Date
+  },
+
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model('Complaint', complaintSchema);
