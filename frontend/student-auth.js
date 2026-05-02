@@ -1,133 +1,136 @@
-const API_BASE = 'http://localhost:5500/api/auth';
+const API_BASE = "http://localhost:5500/api/auth";
 
 // ==============================
-// TOGGLE FORMS
+// LOGIN
 // ==============================
-function showStudentLogin() {
-    document.getElementById('studentLoginForm').classList.add('active');
-    document.getElementById('studentRegisterForm').classList.remove('active');
-
-    document.querySelectorAll('.auth-tab')[0].classList.add('active');
-    document.querySelectorAll('.auth-tab')[1].classList.remove('active');
-}
-
-function showStudentRegister() {
-    document.getElementById('studentRegisterForm').classList.add('active');
-    document.getElementById('studentLoginForm').classList.remove('active');
-
-    document.querySelectorAll('.auth-tab')[1].classList.add('active');
-    document.querySelectorAll('.auth-tab')[0].classList.remove('active');
-}
-
-// ==============================
-// STUDENT LOGIN (BACKEND)
-// ==============================
-async function handleStudentLogin(event) {
+async function handleLogin(event) {
     event.preventDefault();
 
-    const email = document.getElementById('studentLoginEmail').value;
-    const password = document.getElementById('studentLoginPassword').value;
+    const role = document.getElementById("loginRole").value;
+    const loginId = document.getElementById("loginId").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    if (!loginId || !password) {
+        alert("Please fill all fields");
+        return;
+    }
 
     try {
         const res = await fetch(`${API_BASE}/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        });
-
-        const data = await res.json();
-
-        if (!data.success) {
-            alert(data.message || 'Login failed');
-            return;
-        }
-
-        // Save JWT + user
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-
-        alert('Login successful! Welcome ' + data.user.name);
-
-        window.location.href = 'dashboard.html';
-
-    } catch (err) {
-        alert('Server error');
-    }
-}
-
-// ==============================
-// STUDENT REGISTER (BACKEND)
-// ==============================
-async function handleStudentRegister(event) {
-    event.preventDefault();
-
-    const name = document.getElementById('studentRegName').value;
-    const studentId = document.getElementById('studentRegNo').value;
-    const email = document.getElementById('studentRegEmail').value;
-    const department = document.getElementById('studentRegDepartment').value;
-    const phone = document.getElementById('studentRegPhone').value;
-    const password = document.getElementById('studentRegPassword').value;
-    const confirmPassword = document.getElementById('studentRegConfirmPassword').value;
-
-    if (password !== confirmPassword) {
-        alert('Passwords do not match!');
-        return;
-    }
-
-    if (password.length < 6) {
-        alert('Password must be at least 6 characters long!');
-        return;
-    }
-
-    try {
-        const res = await fetch(`${API_BASE}/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                name,
-                email,
+                email: loginId,   // ✅ FIX (IMPORTANT)
                 password,
-                role: 'student',
-                studentId,
-                department,
-                phone
+                role
             })
         });
 
         const data = await res.json();
 
         if (!data.success) {
-            alert(data.message || 'Registration failed');
+            alert(data.message || "Login failed");
             return;
         }
 
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
 
-        alert('Registration successful! Please login.');
-
-        showStudentLogin();
-
-        document.getElementById('studentRegisterForm').querySelector('form').reset();
+        // ROUTING FIX
+        if (data.user.role === "admin") {
+            window.location.href = "staff-dashboard.html";
+        } else {
+            window.location.href = "dashboard.html";
+        }
 
     } catch (err) {
-        alert('Server error');
+        console.error(err);
+        alert("Server error");
     }
 }
 
 // ==============================
-// AUTO LOGIN CHECK (JWT BASED)
+// REGISTER
 // ==============================
-window.addEventListener('DOMContentLoaded', () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+async function handleRegister(event) {
+    event.preventDefault();
 
-    if (user && user.role === 'student') {
-        if (confirm('You are already logged in. Go to dashboard?')) {
-            window.location.href = 'dashboard.html';
-        }
+    const role = document.getElementById("registerRole").value;
+
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const phone = document.getElementById("regPhone").value.trim();
+    const password = document.getElementById("regPassword").value;
+    const confirmPassword = document.getElementById("regConfirmPassword").value;
+
+    const studentIdInput = document.getElementById("regStudentId");
+    const studentId = studentIdInput ? studentIdInput.value.trim() : "";
+
+    if (!name || !email || !password || !phone) {
+        alert("Fill required fields");
+        return;
     }
-});
+
+    if (password !== confirmPassword) {
+        alert("Passwords do not match");
+        return;
+    }
+
+    const payload = {
+        name,
+        email,
+        password,
+        role,
+        phone
+    };
+
+    // only student gets studentId
+    if (role === "student") {
+        payload.studentId = studentId;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (!data.success) {
+            alert(data.message || "Registration failed");
+            return;
+        }
+
+        alert("Registration successful. Please login.");
+
+        showLogin();
+        document.querySelector("#registerForm form").reset();
+
+    } catch (err) {
+        console.error(err);
+        alert("Server error");
+    }
+}
+
+// ==============================
+// UI TOGGLE
+// ==============================
+function showLogin() {
+    document.getElementById("loginForm").classList.add("active");
+    document.getElementById("registerForm").classList.remove("active");
+}
+
+function showRegister() {
+    document.getElementById("registerForm").classList.add("active");
+    document.getElementById("loginForm").classList.remove("active");
+}
+
+// ==============================
+// GLOBAL EXPORT
+// ==============================
+window.handleLogin = handleLogin;
+window.handleRegister = handleRegister;
+window.showLogin = showLogin;
+window.showRegister = showRegister;

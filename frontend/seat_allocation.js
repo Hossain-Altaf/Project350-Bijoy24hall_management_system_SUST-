@@ -1,146 +1,133 @@
-// Check if user is logged in
-window.addEventListener('DOMContentLoaded', () => {
-    const currentUser = localStorage.getItem('currentUser');
-    if (!currentUser) {
-        alert('Please login to access this page!');
-        window.location.href = 'student-login.html';
+// ==============================
+// CONFIG
+// ==============================
+const STORAGE_KEY = "user";
+
+// ==============================
+// INIT
+// ==============================
+document.addEventListener("DOMContentLoaded", () => {
+    const user = getUser();
+
+    if (!user) {
+        redirectLogin();
         return;
     }
 
-    const user = JSON.parse(currentUser);
-    if (user.role !== 'student') {
-        alert('Access denied! This page is for students only.');
-        window.location.href = 'staff-dashboard.html';
+    if (user.role !== "student") {
+        alert("Access denied");
+        window.location.href = "dashboard.html";
         return;
     }
 
     loadSeatAllocation(user);
 });
 
-// Load seat allocation details
+// ==============================
+// GET USER SAFE
+// ==============================
+function getUser() {
+    try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY));
+    } catch {
+        return null;
+    }
+}
+
+// ==============================
+// LOAD DATA
+// ==============================
 function loadSeatAllocation(user) {
-    // Display student info
-    document.getElementById('studentNameDisplay').textContent = user.name;
-    document.getElementById('studentRegDisplay').textContent = user.regNo;
-    document.getElementById('studentDeptDisplay').textContent = user.department;
 
-    // Get user's application
-    const applications = JSON.parse(localStorage.getItem('applications') || '[]');
-    const userApplication = applications.find(app => app.regNumber === user.regNo);
+    setText("studentNameDisplay", user.name);
+    setText("studentRegDisplay", user.regNo);
+    setText("studentDeptDisplay", user.department);
 
-    const statusCard = document.getElementById('allocationStatus');
-    const roomDetailsCard = document.getElementById('roomDetailsCard');
-    const notAllocatedCard = document.getElementById('notAllocatedCard');
+    const applications = JSON.parse(localStorage.getItem("applications") || "[]");
 
-    if (!userApplication) {
-        // No application found
-        statusCard.innerHTML = `
-            <div class="status-icon">❌</div>
-            <h2>No Application Found</h2>
-            <p>You haven't applied for hall admission yet. Please submit your application first.</p>
-            <a href="admission.html" class="btn btn-primary" style="margin-top: 1rem;">Apply for Admission</a>
-        `;
+    const app = applications.find(a => a.regNumber === user.regNo);
+
+    const status = document.getElementById("allocationStatus");
+    const roomCard = document.getElementById("roomDetailsCard");
+    const notCard = document.getElementById("notAllocatedCard");
+
+    if (!app) {
+        status.innerHTML = "No application found";
         return;
     }
 
-    if (userApplication.status === 'Pending') {
-        // Application pending
-        statusCard.innerHTML = `
-            <div class="status-icon">⏳</div>
-            <h2>Application Under Review</h2>
-            <p>Your admission application is currently being reviewed by the hall authorities. 
-            Seat allocation will be done after approval.</p>
-            <p class="text-muted">Application ID: ${userApplication.applicationId}</p>
-        `;
+    // Pending
+    if (app.status === "Pending") {
+        status.innerHTML = "Application Under Review ⏳";
         return;
     }
 
-    if (userApplication.status === 'Rejected') {
-        // Application rejected
-        statusCard.innerHTML = `
-            <div class="status-icon">❌</div>
-            <h2>Application Not Approved</h2>
-            <p>Unfortunately, your admission application was not approved. 
-            Please contact the hall office for more information.</p>
-            <p class="text-muted">Application ID: ${userApplication.applicationId}</p>
-        `;
+    // Rejected
+    if (app.status === "Rejected") {
+        status.innerHTML = "Application Rejected ❌";
         return;
     }
 
-    if (userApplication.status === 'Approved' && !userApplication.roomNumber) {
-        // Approved but not allocated
-        statusCard.innerHTML = `
-            <div class="status-icon">✅</div>
-            <h2>Application Approved!</h2>
-            <p>Congratulations! Your application has been approved. 
-            Seat allocation is in progress and will be completed soon.</p>
-            <p class="text-muted">You will receive a notification once your seat is allocated.</p>
-        `;
+    // Approved but no room
+    if (app.status === "Approved" && !app.roomNumber) {
+        status.innerHTML = "Approved - Waiting for Seat Allocation ✔";
         return;
     }
 
-    if (userApplication.status === 'Approved' && userApplication.roomNumber) {
-        // Allocated - show details
-        statusCard.style.display = 'none';
-        roomDetailsCard.style.display = 'block';
+    // Allocated
+    if (app.status === "Approved" && app.roomNumber) {
 
-        // Fill room details
-        document.getElementById('allocatedRoom').textContent = userApplication.roomNumber;
-        document.getElementById('allocatedFloor').textContent = userApplication.floor;
-        document.getElementById('allocatedBed').textContent = 'Bed ' + userApplication.bedNumber;
+        status.style.display = "none";
+        roomCard.style.display = "block";
 
-        if (userApplication.allocationDate) {
-            const allocDate = new Date(userApplication.allocationDate);
-            document.getElementById('allocationDate').textContent = allocDate.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
+        setText("allocatedRoom", app.roomNumber);
+        setText("allocatedFloor", app.floor);
+        setText("allocatedBed", app.bedNumber);
+
+        if (app.allocationDate) {
+            setText(
+                "allocationDate",
+                new Date(app.allocationDate).toLocaleDateString()
+            );
         }
 
-        // Load roommates (if any)
-        loadRoommates(userApplication.roomNumber, user.regNo);
-    } else {
-        // Not allocated
-        notAllocatedCard.style.display = 'block';
-        statusCard.style.display = 'none';
-    }
-}
-
-// Load roommates information
-function loadRoommates(roomNumber, currentRegNo) {
-    const applications = JSON.parse(localStorage.getItem('applications') || '[]');
-    const roommates = applications.filter(app => 
-        app.roomNumber === roomNumber && 
-        app.regNumber !== currentRegNo &&
-        app.status === 'Approved'
-    );
-
-    const roommatesList = document.getElementById('roommatesList');
-
-    if (roommates.length === 0) {
-        roommatesList.innerHTML = '<p class="text-muted">No other roommates assigned yet.</p>';
         return;
     }
 
-    roommatesList.innerHTML = roommates.map(roommate => `
-        <div class="roommate-card">
-            <div class="roommate-avatar">${roommate.studentName.charAt(0)}</div>
-            <div class="roommate-info">
-                <h4>${roommate.studentName}</h4>
-                <p>Reg: ${roommate.regNumber}</p>
-                <p>${roommate.department} - ${roommate.session}</p>
-                <p>Bed ${roommate.bedNumber}</p>
-            </div>
-        </div>
-    `).join('');
+    notCard.style.display = "block";
 }
 
-// Logout function
-function logout() {
-    if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('currentUser');
-        alert('Logged out successfully!');
-        window.location.href = 'index.html';
-    }
+// ==============================
+// UTIL
+// ==============================
+function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value || "-";
+}
+
+// ==============================
+// LOGOUT (GLOBAL FIX)
+// ==============================
+function logout(e) {
+    if (e) e.preventDefault();
+
+    const ok = confirm("Logout?");
+    if (!ok) return;
+
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("applications");
+
+    window.location.href = "index.html";
+}
+
+// expose globally (IMPORTANT)
+window.logout = logout;
+
+// ==============================
+// REDIRECT
+// ==============================
+function redirectLogin() {
+    window.location.href = "student-login.html";
 }

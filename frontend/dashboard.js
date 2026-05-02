@@ -32,13 +32,15 @@ function authCheck() {
 }
 
 // ==============================
-// LOAD DATA
+// LOAD DASHBOARD DATA
 // ==============================
 async function loadDashboardData(user) {
 
-    document.getElementById("userName").textContent = user.name || "Student";
-    document.getElementById("userInitial").textContent =
-        user.name ? user.name.charAt(0).toUpperCase() : "S";
+    const nameEl = document.getElementById("userName");
+    const initEl = document.getElementById("userInitial");
+
+    if (nameEl) nameEl.textContent = user.name || "Student";
+    if (initEl) initEl.textContent = user.name?.charAt(0)?.toUpperCase() || "S";
 
     const token = localStorage.getItem("token");
 
@@ -53,8 +55,9 @@ async function loadDashboardData(user) {
 
         const statusEl = document.getElementById("applicationStatus");
 
-        if (data.success && data.data) {
+        if (!statusEl) return;
 
+        if (data.success && data.data) {
             const app = data.data;
 
             const map = {
@@ -65,37 +68,46 @@ async function loadDashboardData(user) {
 
             statusEl.textContent = map[app.admissionStatus] || "Unknown";
 
-            document.getElementById("roomNumber").textContent =
-                app.roomNumber ? "Room " + app.roomNumber : "Not Allocated";
+            const roomEl = document.getElementById("roomNumber");
+            if (roomEl) {
+                roomEl.textContent = app.roomNumber
+                    ? "Room " + app.roomNumber
+                    : "Not Allocated";
+            }
 
-            document.getElementById("feeStatus").textContent =
-                app.admissionStatus === "approved" ? "Paid ✓" : "Pending";
+            const feeEl = document.getElementById("feeStatus");
+            if (feeEl) {
+                feeEl.textContent =
+                    app.admissionStatus === "approved" ? "Paid ✓" : "Pending";
+            }
 
         } else {
             statusEl.textContent = "Not Applied";
         }
 
     } catch (err) {
-        console.error(err);
-        document.getElementById("applicationStatus").textContent = "Error";
+        console.error("Dashboard error:", err);
+        const statusEl = document.getElementById("applicationStatus");
+        if (statusEl) statusEl.textContent = "Error";
     }
 }
 
 // ==============================
-// LOGOUT (FIXED)
+// LOGOUT (FIXED PROPERLY)
 // ==============================
 function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    window.location.replace("index.html");
+    localStorage.clear();
+    window.location.href = "index.html";
 }
 
+// attach event safely
 function bindLogout() {
     const btn = document.getElementById("logoutBtn");
 
     if (btn) {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+
             if (confirm("Are you sure you want to logout?")) {
                 logout();
             }
@@ -103,4 +115,5 @@ function bindLogout() {
     }
 }
 
+// global access (important)
 window.logout = logout;
