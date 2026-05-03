@@ -1,11 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Dashboard - Bijoy 24 Hall</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Additional styles for complaint management */
+        .complaint-detail {
+            padding: 10px;
+        }
+
+        .complaint-detail p {
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-in_progress {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-approved,
+        .status-resolved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+    </style>
 </head>
+
 <body>
     <!-- Header -->
     <header>
@@ -62,6 +130,11 @@
                         <h3>Review Applications</h3>
                         <p>View and approve admission applications</p>
                     </a>
+                    <a href="#seed-seats" class="action-card" onclick="seedSeats()">
+                        <div class="action-icon">🌱</div>
+                        <h3>Seed Seats</h3>
+                        <p>Generate initial seat inventory (Admin only)</p>
+                    </a>
                     <a href="#seat-management" class="action-card" onclick="showSeatManagement()">
                         <div class="action-icon">🛏️</div>
                         <h3>Seat Management</h3>
@@ -71,6 +144,11 @@
                         <div class="action-icon">📝</div>
                         <h3>Complaints</h3>
                         <p>View and resolve student complaints</p>
+                    </a>
+                    <a href="#" class="action-card" onclick="fixComplaints()">
+                        <div class="action-icon">🔧</div>
+                        <h3>Fix Complaints</h3>
+                        <p>Fix broken complaint references (Admin only)</p>
                     </a>
                     <a href="#dining-management" class="action-card" onclick="showDiningManagement()">
                         <div class="action-icon">🍽️</div>
@@ -136,7 +214,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="allocateRoomNo">Room Number *</label>
-                                <input type="number" id="allocateRoomNo" required min="1" max="132" placeholder="1-132">
+                                <input type="text" id="allocateRoomNo" required
+                                    placeholder="Enter room number (e.g., 101, 201)">
                             </div>
                         </div>
                         <div class="form-row">
@@ -189,9 +268,18 @@
                 </div>
             </div>
 
-            <!-- Complaints Section -->
+            <!-- Complaints Section with Filter Buttons -->
             <div class="dashboard-section-card" id="complaintsSection" style="display: none;">
-                <h2>Student Complaints</h2>
+                <div class="section-header">
+                    <h2>Student Complaints</h2>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" onclick="filterComplaints('all')">All</button>
+                        <button class="filter-btn" onclick="filterComplaints('pending')">Pending</button>
+                        <button class="filter-btn" onclick="filterComplaints('in_progress')">In Progress</button>
+                        <button class="filter-btn" onclick="filterComplaints('resolved')">Resolved</button>
+                        <button class="filter-btn" onclick="filterComplaints('rejected')">Rejected</button>
+                    </div>
+                </div>
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
@@ -204,13 +292,13 @@
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="complaintsTableBody">
-                            <tr>
-                                <td colspan="8" class="no-data">No complaints found</td>
-                            </tr>
-                        </tbody>
+                    </table>
+                    </thead>
+                    <tbody id="complaintsTableBody">
+                        <tr>
+                            <td colspan="8" class="no-data">No complaints found</td>
+                        </tr>
+                    </tbody>
                     </table>
                 </div>
             </div>
@@ -231,6 +319,24 @@
         </div>
     </div>
 
+    <!-- Complaint Detail Modal -->
+    <div id="complaintModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeComplaintModal()">&times;</span>
+            <h2>Complaint Details</h2>
+            <div id="complaintDetails"></div>
+            <div class="modal-actions">
+                <button class="btn btn-warning" onclick="updateComplaintStatus('in_progress')">🔄 In Progress</button>
+                <button class="btn btn-success" onclick="updateComplaintStatus('resolved')">✓ Resolve</button>
+                <button class="btn btn-danger" onclick="updateComplaintStatus('rejected')">✗ Reject</button>
+                <button class="btn btn-secondary" onclick="closeComplaintModal()">Close</button>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
     <script src="staff-dashboard.js"></script>
 </body>
+
 </html>

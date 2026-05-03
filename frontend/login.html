@@ -83,6 +83,21 @@
             cursor: pointer;
             font-weight: bold;
         }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .redirect-message {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #1976d2;
+        }
     </style>
 </head>
 
@@ -99,6 +114,11 @@
 
 <section class="auth-section">
     <div class="auth-container">
+
+        <!-- Redirect Info Message -->
+        <div id="redirectMessage" class="redirect-message" style="display: none;">
+            🔄 Please login to continue to the application form
+        </div>
 
         <!-- Tabs -->
         <div class="auth-tabs">
@@ -181,19 +201,49 @@
     </div>
 </section>
 
-<script>
-function showLogin(){
-    document.getElementById("loginForm").classList.add("active");
-    document.getElementById("registerForm").classList.remove("active");
-}
-
-function showRegister(){
-    document.getElementById("registerForm").classList.add("active");
-    document.getElementById("loginForm").classList.remove("active");
-}
-</script>
-
 <script src="student-auth.js"></script>
+
+<script>
+    // Check for redirect URL from localStorage or URL parameter
+    window.addEventListener('DOMContentLoaded', function() {
+        // Check URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        let redirectUrl = urlParams.get('redirect');
+        
+        // Check localStorage
+        if (!redirectUrl) {
+            redirectUrl = localStorage.getItem('redirectAfterLogin');
+        }
+        
+        if (redirectUrl && redirectUrl !== 'null' && redirectUrl !== 'undefined') {
+            // Show message
+            const msgDiv = document.getElementById('redirectMessage');
+            if (msgDiv) {
+                msgDiv.style.display = 'block';
+                if (redirectUrl.includes('admission')) {
+                    msgDiv.textContent = '📝 Please login to continue with your admission application';
+                } else if (redirectUrl.includes('dashboard')) {
+                    msgDiv.textContent = '🔐 Please login to access your dashboard';
+                } else {
+                    msgDiv.textContent = '🔄 Please login to continue';
+                }
+            }
+            
+            // Store for use after login
+            window.pendingRedirect = redirectUrl;
+        }
+    });
+
+    function showLogin(){
+        document.getElementById("loginForm").classList.add("active");
+        document.getElementById("registerForm").classList.remove("active");
+    }
+
+    function showRegister(){
+        document.getElementById("registerForm").classList.add("active");
+        document.getElementById("loginForm").classList.remove("active");
+    }
+</script>
 
 </body>
 </html>

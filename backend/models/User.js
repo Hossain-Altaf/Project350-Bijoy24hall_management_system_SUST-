@@ -21,10 +21,11 @@ const userSchema = new mongoose.Schema({
     select: false
   },
   role: {
-    type: String,
-    enum: ['admin', 'staff', 'student'],
-    default: 'student'
-  },
+  type: String,
+  // Remove the enum validation entirely
+  // enum: ['admin', 'staff', 'student'],  // COMMENT THIS OUT
+  default: 'student'
+},
   studentId: {
     type: String,
     unique: true,

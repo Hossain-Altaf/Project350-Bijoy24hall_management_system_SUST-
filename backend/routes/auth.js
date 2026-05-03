@@ -5,18 +5,21 @@ const User = require('../models/User');
 const { protect } = require('../middleware/auth');
 
 // ==============================
-// TOKEN GENERATOR
+// TOKEN GENERATOR (FIXED)
 // ==============================
-const generateToken = (id) => {
+const generateToken = (user) => {
   return jwt.sign(
-    { id },
+    {
+      id: user._id,
+      role: user.role
+    },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRE || '7d' }
   );
 };
 
 // ==============================
-// REGISTER (FIXED)
+// REGISTER
 // ==============================
 router.post('/register', async (req, res) => {
   try {
@@ -38,8 +41,7 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // ✅ FIX: use new User + save() (this triggers pre-save hook)
-    const user = new User({
+    const user = await User.create({
       name,
       email,
       password,
@@ -49,11 +51,9 @@ router.post('/register', async (req, res) => {
       phone
     });
 
-    await user.save();
+    const token = generateToken(user);
 
-    const token = generateToken(user._id);
-
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       token,
       user: {
@@ -61,12 +61,12 @@ router.post('/register', async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        studentId: user.studentId
+        studentId: user.studentId || null
       }
     });
 
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message
     });
@@ -74,7 +74,7 @@ router.post('/register', async (req, res) => {
 });
 
 // ==============================
-// LOGIN
+// LOGIN (FIXED)
 // ==============================
 router.post('/login', async (req, res) => {
   try {
@@ -107,9 +107,14 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    const token = generateToken(user._id);
+    // 🔥 ENSURE ROLE ALWAYS EXISTS
+    if (!user.role) {
+      user.role = 'student';
+    }
 
-    res.json({
+    const token = generateToken(user);
+
+    return res.json({
       success: true,
       token,
       user: {
@@ -117,12 +122,12 @@ router.post('/login', async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        studentId: user.studentId
+        studentId: user.studentId || null
       }
     });
 
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message
     });
@@ -133,7 +138,7 @@ router.post('/login', async (req, res) => {
 // GET CURRENT USER
 // ==============================
 router.get('/me', protect, (req, res) => {
-  res.json({
+  return res.json({
     success: true,
     user: req.user
   });
@@ -143,7 +148,7 @@ router.get('/me', protect, (req, res) => {
 // LOGOUT
 // ==============================
 router.post('/logout', protect, (req, res) => {
-  res.json({
+  return res.json({
     success: true,
     message: 'Logged out successfully'
   });

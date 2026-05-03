@@ -1,106 +1,101 @@
+// ==============================
+// STUDENT DASHBOARD - COMPLETE WORKING VERSION
+// ==============================
+
 const API_BASE = "http://localhost:5500/api";
 
-// ==============================
-// INIT
-// ==============================
-document.addEventListener("DOMContentLoaded", () => {
-
-    authCheck();
-
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) return;
-
-    loadDashboardData(user);
-    bindLogout();
-});
-
-// ==============================
-// AUTH CHECK
-// ==============================
-function authCheck() {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
-
-    if (!token || !user) {
-        window.location.href = "student-login.html";
+window.addEventListener('DOMContentLoaded', async () => {
+    const token = localStorage.getItem('token');
+    const currentUser = localStorage.getItem('user');
+    
+    if (!token || !currentUser) {
+        alert('Please login to access dashboard');
+        window.location.href = 'login.html';
         return;
     }
-
-    if (user.role !== "student") {
-        window.location.href = "login.html";
-    }
-}
-
-// ==============================
-// LOAD DATA
-// ==============================
-async function loadDashboardData(user) {
-
-    document.getElementById("userName").textContent = user.name || "Student";
-    document.getElementById("userInitial").textContent =
-        user.name ? user.name.charAt(0).toUpperCase() : "S";
-
-    const token = localStorage.getItem("token");
-
+    
     try {
-        const res = await fetch(`${API_BASE}/admission/my`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+        const user = JSON.parse(currentUser);
+        document.getElementById('userName').textContent = user.name || 'Student';
+        document.getElementById('userInitial').textContent = (user.name || 'S').charAt(0).toUpperCase();
+        
+        await loadApplicationStatus(token);
+        
+        // Auto-refresh every 10 seconds to check for status updates
+        setInterval(() => loadApplicationStatus(token), 10000);
+        
+    } catch (error) {
+        console.error('Error loading dashboard:', error);
+    }
+});
+
+async function loadApplicationStatus(token) {
+    const statusElement = document.getElementById('applicationStatus');
+    const roomElement = document.getElementById('roomNumber');
+    const feeElement = document.getElementById('feeStatus');
+    const hallCardElement = document.getElementById('hallCard');
+    
+    try {
+        const response = await fetch(`${API_BASE}/admission/my-application`, {
+            headers: { 'Authorization': `Bearer ${token}` }
         });
-
-        const data = await res.json();
-
-        const statusEl = document.getElementById("applicationStatus");
-
-        if (data.success && data.data) {
-
-            const app = data.data;
-
-            const map = {
-                pending: "Under Review ⏳",
-                approved: "Approved ✓",
-                rejected: "Rejected ✗"
-            };
-
-            statusEl.textContent = map[app.admissionStatus] || "Unknown";
-
-            document.getElementById("roomNumber").textContent =
-                app.roomNumber ? "Room " + app.roomNumber : "Not Allocated";
-
-            document.getElementById("feeStatus").textContent =
-                app.admissionStatus === "approved" ? "Paid ✓" : "Pending";
-
+        
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+            const student = result.data;
+            const status = student.admissionStatus;
+            
+            if (status === 'approved') {
+                statusElement.innerHTML = '✅ <strong>Approved!</strong><br>Your application has been approved.';
+                statusElement.style.color = '#065f46';
+                
+                if (student.roomNumber && student.seatNumber) {
+                    roomElement.innerHTML = `
+                        <strong>🏠 Room:</strong> ${student.roomNumber}<br>
+                        <strong>🪑 Seat:</strong> ${student.seatNumber}<br>
+                        ${student.floor ? `<strong>📊 Floor:</strong> ${student.floor}<br>` : ''}
+                        <span style="color: #10b981;">✓ Seat allocated</span>
+                    `;
+                } else {
+                    roomElement.innerHTML = '⏳ Seat allocation in progress...';
+                }
+                roomElement.style.color = '#065f46';
+                
+                feeElement.innerHTML = '✅ Paid<br>Admission fee confirmed';
+                hallCardElement.innerHTML = '📇 Available for collection<br>Visit hall office';
+                
+            } else if (status === 'rejected') {
+                statusElement.innerHTML = '❌ <strong>Rejected</strong><br>Your application has been rejected.';
+                statusElement.style.color = '#991b1b';
+                roomElement.innerHTML = 'Not Allocated';
+                feeElement.innerHTML = 'Contact Hall Office';
+                hallCardElement.innerHTML = 'Not Issued';
+            } else {
+                statusElement.innerHTML = '⏳ <strong>Under Review</strong><br>Your application is being processed.';
+                statusElement.style.color = '#92400e';
+                roomElement.innerHTML = 'Awaiting approval';
+                feeElement.innerHTML = 'Under Verification';
+                hallCardElement.innerHTML = 'Will be issued after approval';
+            }
         } else {
-            statusEl.textContent = "Not Applied";
+            statusElement.innerHTML = '📝 <strong>Not Applied</strong><br><a href="admission.html" class="apply-link">Apply Now</a>';
+            statusElement.style.color = '#6b7280';
+            roomElement.innerHTML = 'Not Applied';
+            feeElement.innerHTML = 'N/A';
+            hallCardElement.innerHTML = 'N/A';
         }
-
-    } catch (err) {
-        console.error(err);
-        document.getElementById("applicationStatus").textContent = "Error";
+    } catch (error) {
+        console.error('Error:', error);
     }
 }
 
-// ==============================
-// LOGOUT (FIXED)
-// ==============================
 function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    window.location.replace("index.html");
-}
-
-function bindLogout() {
-    const btn = document.getElementById("logoutBtn");
-
-    if (btn) {
-        btn.addEventListener("click", () => {
-            if (confirm("Are you sure you want to logout?")) {
-                logout();
-            }
-        });
+    if (confirm('Logout?')) {
+        localStorage.clear();
+        window.location.href = 'index.html';
     }
 }
 
 window.logout = logout;
+document.getElementById('logoutBtn')?.addEventListener('click', logout);

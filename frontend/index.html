@@ -36,7 +36,8 @@
             <h1>Welcome to Bijoy 24 Hall</h1>
             <p>Digital Hall Management System</p>
             <div class="cta-buttons">
-                <a href="admission.html" class="btn btn-primary">Apply for Admission</a>
+                <!-- UPDATED: Direct to login with redirect parameter -->
+                <a href="login.html?redirect=admission.html" class="btn btn-primary">Apply for Admission</a>
                 <a href="#features" class="btn btn-secondary">Explore Features</a>
             </div>
         </div>
@@ -68,12 +69,12 @@
     <section class="features" id="features">
         <h2 class="section-title">Our Features & Services</h2>
         <div class="features-grid">
-            <!-- Hall Admission -->
-            <div class="feature-card" onclick="window.location.href='admission.html'">
+            <!-- Hall Admission - UPDATED -->
+            <div class="feature-card" onclick="window.location.href='login.html?redirect=admission.html'">
                 <div class="feature-icon">🎓</div>
                 <h3>Hall Admission</h3>
                 <p>Online application, merit-based seat allocation, and transparent admission process with digital fee payment.</p>
-                <a href="admission.html" class="feature-link">Apply Now →</a>
+                <a href="login.html?redirect=admission.html" class="feature-link">Apply Now →</a>
             </div>
 
             <!-- Seat Allocation -->
@@ -274,7 +275,7 @@
             <div class="footer-section">
                 <h3>Important Links</h3>
                 <ul>
-                    <li><a href="admission.html">Admission Notice</a></li>
+                    <li><a href="login.html?redirect=admission.html">Admission Notice</a></li>
                     <li><a href="dining.html">Fee Structure</a></li>
                     <li><a href="#">Rules & Regulations</a></li>
                     <li><a href="hall-office.html">Hall Committee</a></li>

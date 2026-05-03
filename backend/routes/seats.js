@@ -28,8 +28,58 @@ router.get('/available', protect, async (req, res) => {
   }
 });
 
+// @route   POST /api/seats/seed
+// @desc    Seed initial seats (admin only)
+// @access  Private (admin)
+router.post('/seed', protect, authorize('admin'), async (req, res) => {
+  try {
+    const { floors = 5, roomsPerFloor = 10, seatsPerRoom = 4 } = req.body;
+    const seats = [];
+
+    for (let floor = 1; floor <= floors; floor++) {
+      for (let room = 1; room <= roomsPerFloor; room++) {
+        const roomNumber = `${floor}${room.toString().padStart(2, '0')}`;
+        for (let seat = 1; seat <= seatsPerRoom; seat++) {
+          seats.push({
+            seatNumber: `${roomNumber}-S${seat}`,
+            roomNumber: roomNumber,
+            floor: floor,
+            seatType: seatsPerRoom > 1 ? 'shared' : 'single',
+            isOccupied: false,
+            occupiedBy: null
+          });
+        }
+      }
+    }
+
+    // Clear existing seats
+    await Seat.deleteMany({});
+    
+    // Insert new seats
+    const result = await Seat.insertMany(seats);
+    
+    res.json({ 
+      success: true, 
+      message: `${result.length} seats seeded successfully`,
+      data: {
+        floors: floors,
+        roomsPerFloor: roomsPerFloor,
+        seatsPerRoom: seatsPerRoom,
+        totalSeats: result.length
+      }
+    });
+    
+  } catch (error) {
+    console.error('Seed error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: error.message 
+    });
+  }
+});
+
 // @route   POST /api/seats
-// @desc    Add new seat (admin only)
+// @desc    Add single seat (admin only)
 // @access  Private (admin)
 router.post('/', protect, authorize('admin'), async (req, res) => {
   try {
@@ -40,37 +90,17 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
       return res.status(400).json({ success: false, message: 'Seat number already exists' });
     }
 
-    const seat = await Seat.create({ seatNumber, roomNumber, floor, seatType });
+    const seat = await Seat.create({ 
+      seatNumber, 
+      roomNumber, 
+      floor, 
+      seatType,
+      isOccupied: false,
+      occupiedBy: null
+    });
+    
     res.status(201).json({ success: true, data: seat });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-});
-
-// @route   POST /api/seats/seed
-// @desc    Seed initial seats (admin only) — generates seats automatically
-// @access  Private (admin)
-router.post('/seed', protect, authorize('admin'), async (req, res) => {
-  try {
-    const { floors = 5, roomsPerFloor = 10, seatsPerRoom = 4 } = req.body;
-    const seats = [];
-
-    for (let floor = 1; floor <= floors; floor++) {
-      for (let room = 1; room <= roomsPerFloor; room++) {
-        const roomNumber = `${floor}0${room < 10 ? '0' + room : room}`;
-        for (let seat = 1; seat <= seatsPerRoom; seat++) {
-          seats.push({
-            seatNumber: `${roomNumber}-S${seat}`,
-            roomNumber,
-            floor,
-            seatType: seatsPerRoom > 1 ? 'shared' : 'single'
-          });
-        }
-      }
-    }
-
-    await Seat.insertMany(seats, { ordered: false });
-    res.json({ success: true, message: `${seats.length} seats seeded successfully` });
+    
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -82,16 +112,34 @@ router.post('/seed', protect, authorize('admin'), async (req, res) => {
 router.put('/allocate/:studentId', protect, authorize('admin', 'staff'), async (req, res) => {
   try {
     const { seatNumber } = req.body;
+    const { studentId } = req.params;
 
-    const student = await Student.findById(req.params.studentId);
-    if (!student) return res.status(404).json({ success: false, message: 'Student not found' });
-    if (student.admissionStatus !== 'approved') {
-      return res.status(400).json({ success: false, message: 'Student admission must be approved first' });
+    console.log('Allocation request:', { studentId, seatNumber });
+
+    // Find the student
+    const student = await Student.findById(studentId);
+    if (!student) {
+      return res.status(404).json({ success: false, message: 'Student not found' });
     }
 
+    // Check if admission is approved
+    if (student.admissionStatus !== 'approved') {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Student admission must be approved first' 
+      });
+    }
+
+    // Find the seat
     const seat = await Seat.findOne({ seatNumber });
-    if (!seat) return res.status(404).json({ success: false, message: 'Seat not found' });
-    if (seat.isOccupied) return res.status(400).json({ success: false, message: 'Seat already occupied' });
+    if (!seat) {
+      return res.status(404).json({ success: false, message: 'Seat not found' });
+    }
+
+    // Check if seat is occupied
+    if (seat.isOccupied) {
+      return res.status(400).json({ success: false, message: 'Seat already occupied' });
+    }
 
     // Free previous seat if student had one
     if (student.seatNumber) {
@@ -107,12 +155,24 @@ router.put('/allocate/:studentId', protect, authorize('admin', 'staff'), async (
     seat.allocatedAt = new Date();
     await seat.save();
 
+    // Update student with seat info
     student.seatNumber = seat.seatNumber;
     student.roomNumber = seat.roomNumber;
     await student.save();
 
-    res.json({ success: true, message: `Seat ${seatNumber} allocated to ${student.name}`, data: seat });
+    res.json({ 
+      success: true, 
+      message: `Seat ${seatNumber} allocated to ${student.name}`,
+      data: {
+        seatNumber: seat.seatNumber,
+        roomNumber: seat.roomNumber,
+        floor: seat.floor,
+        studentName: student.name
+      }
+    });
+    
   } catch (error) {
+    console.error('Allocation error:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 });
