@@ -1,12 +1,8 @@
-// ==============================
-// CONFIG
-// ==============================
-const API_BASE = "http://localhost:5500/api";
-// (Better than hardcoding localhost)
 
-// ==============================
-// MOBILE MENU (SAFE)
-// ==============================
+const API_BASE = "http://localhost:5500/api";
+//
+
+// 
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
 
@@ -39,9 +35,8 @@ if (menuToggle && navLinks) {
     });
 }
 
-// ==============================
+
 // AUTH SYSTEM
-// ==============================
 function checkAuth(requiredRole = null) {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user") || "null");
@@ -68,9 +63,9 @@ function logout() {
     window.location.href = "login.html";
 }
 
-// ==============================
+
 // LOGIN
-// ==============================
+
 async function handleLogin(event) {
     event.preventDefault();
 
@@ -112,9 +107,9 @@ async function handleLogin(event) {
     }
 }
 
-// ==============================
+
 // REGISTER
-// ==============================
+
 async function handleRegister(event) {
     event.preventDefault();
 
@@ -160,9 +155,8 @@ async function handleRegister(event) {
     }
 }
 
-// ==============================
-// SHOW LOGIN (FIXED MISSING FUNCTION)
-// ==============================
+
+// SHOW LOGIN 
 function showLogin() {
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
@@ -173,9 +167,8 @@ function showLogin() {
     }
 }
 
-// ==============================
+
 // COUNTER ANIMATION
-// ==============================
 function animateCounter(element, target, duration = 2000) {
     let current = 0;
     const increment = target / (duration / 16);
@@ -192,9 +185,8 @@ function animateCounter(element, target, duration = 2000) {
     }, 16);
 }
 
-// ==============================
+
 // STATS ANIMATION
-// ==============================
 const statsSection = document.querySelector('.stats');
 
 if (statsSection) {
@@ -214,9 +206,8 @@ if (statsSection) {
     observer.observe(statsSection);
 }
 
-// ==============================
-// SMOOTH SCROLL (SAFE)
-// ==============================
+
+//SCROLL 
 const anchors = document.querySelectorAll('a[href^="#"]');
 
 if (anchors.length) {
@@ -236,9 +227,8 @@ if (anchors.length) {
     });
 }
 
-// ==============================
+
 // HEADER SHADOW
-// ==============================
 window.addEventListener('scroll', () => {
     const header = document.querySelector('header');
 
@@ -250,9 +240,8 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// ==============================
+
 // HERO ANIMATION
-// ==============================
 const heroContent = document.querySelector('.hero-content');
 
 if (heroContent) {
@@ -268,9 +257,8 @@ if (heroContent) {
     }, 50);
 }
 
-// ==============================
+
 // INIT
-// ==============================
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Bijoy 24 Hall System Ready");
 

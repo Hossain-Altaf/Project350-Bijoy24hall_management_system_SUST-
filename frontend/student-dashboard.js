@@ -1,7 +1,3 @@
-// ==============================
-// STUDENT DASHBOARD - COMPLETE WORKING VERSION
-// ==============================
-
 const API_BASE = "http://localhost:5500/api";
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -21,7 +17,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         
         await loadApplicationStatus(token);
         
-        // Auto-refresh every 10 seconds to check for status updates
+        
         setInterval(() => loadApplicationStatus(token), 10000);
         
     } catch (error) {

@@ -1,6 +1,5 @@
-// ==============================
-// STAFF DASHBOARD - COMPLETE WORKING VERSION WITH COMPLAINTS
-// ==============================
+
+// STAFF DASHBOARD
 
 const API_BASE = "http://localhost:5500/api";
 
@@ -191,9 +190,9 @@ async function viewApplication(applicationId) {
     }
 }
 
-// ============================================
+//
 // APPROVE APPLICATION & ALLOCATE SEAT
-// ============================================
+
 async function approveApplication() {
     if (!currentApplication) {
         alert('No application selected!');
@@ -310,9 +309,9 @@ async function rejectApplication() {
     }
 }
 
-// ============================================
+//
 // REFRESH ALL DATA
-// ============================================
+
 async function refreshAllData() {
     await loadApplications();
     await loadDashboardData();
@@ -320,9 +319,9 @@ async function refreshAllData() {
     console.log('✅ All data refreshed');
 }
 
-// ============================================
+//
 // SEED SEATS
-// ============================================
+// 
 async function seedSeats() {
     const token = localStorage.getItem('token');
     const currentUser = localStorage.getItem('user');
