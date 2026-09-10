@@ -516,6 +516,7 @@ Shahjalal University of Science & Technology (SUST)
 ### Hossain Altaf
 
 **Frontend Developer**
+Shahjalal University of Science & Technology (SUST)
 
 * GitHub: [@Hossain-Altaf](https://github.com/Hossain-Altaf)
 * LinkedIn: [Altaf Hossain](https://www.linkedin.com/in/altaf-hossain13)
