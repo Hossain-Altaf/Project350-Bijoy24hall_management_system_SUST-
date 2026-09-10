@@ -513,7 +513,7 @@ Shahjalal University of Science & Technology (SUST)
 * GitHub: [@ichadni](https://github.com/ichadni)
 * LinkedIn: [Israt Chadni](https://www.linkedin.com/in/israt-chadni-016870287/)
 
-### Hossain Altaf
+### Altaf Hossain
 
 **Frontend Developer**
 Shahjalal University of Science & Technology (SUST)
