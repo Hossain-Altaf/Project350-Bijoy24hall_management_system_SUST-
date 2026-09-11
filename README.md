@@ -33,11 +33,11 @@ The system provides dedicated interfaces for students and hall staff to manage h
 
 * [✨ Key Features](#-key-features)
 * [🛠️ Tech Stack](#️-tech-stack)
+* [📸 Screenshots](#-screenshots)
 * [📁 Project Structure](#-project-structure)
 * [⚙️ Local Setup & Installation](#️-local-setup--installation)
 * [🔐 Authentication](#-authentication)
 * [🗄️ Database](#️-database)
-* [📸 Screenshots](#-screenshots)
 * [🚧 Project Status](#-project-status)
 * [👥 Team Contributions](#-team-contributions)
 * [🔮 Future Improvements](#-future-improvements)
@@ -106,6 +106,106 @@ The system provides dedicated functionality for students and hall office staff.
 * MongoDB Atlas
 
 ---
+## 📸 Screenshots
+
+The following screenshots demonstrate the major features and interfaces of the Hall Management System.
+
+<details>
+<summary>🏠 Homepage</summary>
+
+![Homepage](frontend/imgs/homepage.png)
+
+</details>
+
+<details>
+<summary>🔐 Authentication</summary>
+
+### Login
+
+![Login](frontend/imgs/login.png)
+
+### Registration
+
+![Registration](frontend/imgs/registration.png)
+
+</details>
+
+<details>
+<summary>🎓 Admission Management</summary>
+
+### Admission Form
+
+![Admission Form](frontend/imgs/admission-form.png)
+
+### Admission Process
+
+![Admission Process](frontend/imgs/admission-process.png)
+
+### Application Management
+
+![Application Management](frontend/imgs/application-admin.png)
+
+### Review Application
+
+![Review Application](frontend/imgs/review-application.png)
+
+</details>
+
+<details>
+<summary>🏢 Hall Services</summary>
+
+### Hall Features
+
+![Hall Features](frontend/imgs/hall-feature.png)
+
+### Find Hall Seat
+
+![Find Hall Seat](frontend/imgs/find-hall-seat.png)
+
+</details>
+
+<details>
+<summary>🪑 Room & Seat Allocation</summary>
+
+### Seat Allocation
+
+![Seat Allocation](frontend/imgs/seat-allocate.png)
+
+</details>
+
+<details>
+<summary>📝 Complaint Management</summary>
+
+### Submit Complaint
+
+![Submit Complaint](frontend/imgs/submit-complain.png)
+
+### Complaint Management
+
+![Complaint Management](frontend/imgs/complain.png)
+
+</details>
+
+<details>
+<summary>📊 Administrative Dashboard</summary>
+
+### Admin Dashboard
+
+![Admin Dashboard](frontend/imgs/admin-dashboard.png)
+
+</details>
+
+<details>
+<summary>📄 Other Forms</summary>
+
+### Submit Form
+
+![Submit Form](frontend/imgs/submit-form.png)
+
+</details>
+
+---
+
 
 ## 📁 Project Structure
 
@@ -291,106 +391,6 @@ MongoDB is used to store and manage information related to:
 * Other hall management data
 
 **Mongoose** is used to define database schemas and interact with MongoDB from the Node.js backend.
-
----
-
-## 📸 Screenshots
-
-The following screenshots demonstrate the major features and interfaces of the Hall Management System.
-
-<details>
-<summary>🏠 Homepage</summary>
-
-![Homepage](frontend/imgs/homepage.png)
-
-</details>
-
-<details>
-<summary>🔐 Authentication</summary>
-
-### Login
-
-![Login](frontend/imgs/login.png)
-
-### Registration
-
-![Registration](frontend/imgs/registration.png)
-
-</details>
-
-<details>
-<summary>🎓 Admission Management</summary>
-
-### Admission Form
-
-![Admission Form](frontend/imgs/admission-form.png)
-
-### Admission Process
-
-![Admission Process](frontend/imgs/admission-process.png)
-
-### Application Management
-
-![Application Management](frontend/imgs/application-admin.png)
-
-### Review Application
-
-![Review Application](frontend/imgs/review-application.png)
-
-</details>
-
-<details>
-<summary>🏢 Hall Services</summary>
-
-### Hall Features
-
-![Hall Features](frontend/imgs/hall-feature.png)
-
-### Find Hall Seat
-
-![Find Hall Seat](frontend/imgs/find-hall-seat.png)
-
-</details>
-
-<details>
-<summary>🪑 Room & Seat Allocation</summary>
-
-### Seat Allocation
-
-![Seat Allocation](frontend/imgs/seat-allocate.png)
-
-</details>
-
-<details>
-<summary>📝 Complaint Management</summary>
-
-### Submit Complaint
-
-![Submit Complaint](frontend/imgs/submit-complain.png)
-
-### Complaint Management
-
-![Complaint Management](frontend/imgs/complain.png)
-
-</details>
-
-<details>
-<summary>📊 Administrative Dashboard</summary>
-
-### Admin Dashboard
-
-![Admin Dashboard](frontend/imgs/admin-dashboard.png)
-
-</details>
-
-<details>
-<summary>📄 Other Forms</summary>
-
-### Submit Form
-
-![Submit Form](frontend/imgs/submit-form.png)
-
-</details>
 
 ---
 
