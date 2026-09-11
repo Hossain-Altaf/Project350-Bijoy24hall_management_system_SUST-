@@ -110,102 +110,80 @@ The system provides dedicated functionality for students and hall office staff.
 
 The following screenshots demonstrate the major features and interfaces of the Hall Management System.
 
-<details>
-<summary>🏠 Homepage</summary>
+## 📸 Screenshots
+
+The following screenshots demonstrate the major features and interfaces of the Hall Management System.
+
+### 🏠 Homepage
 
 ![Homepage](frontend/imgs/homepage.png)
 
-</details>
+### 🔐 Authentication
 
-<details>
-<summary>🔐 Authentication</summary>
-
-### Login
+#### Login
 
 ![Login](frontend/imgs/login.png)
 
-### Registration
+#### Registration
 
 ![Registration](frontend/imgs/registration.png)
 
-</details>
+### 🎓 Admission Management
 
-<details>
-<summary>🎓 Admission Management</summary>
-
-### Admission Form
+#### Admission Form
 
 ![Admission Form](frontend/imgs/admission-form.png)
 
-### Admission Process
+#### Admission Process
 
 ![Admission Process](frontend/imgs/admission-process.png)
 
-### Application Management
+#### Application Management
 
 ![Application Management](frontend/imgs/application-admin.png)
 
-### Review Application
+#### Review Application
 
 ![Review Application](frontend/imgs/review-application.png)
 
-</details>
+### 🏢 Hall Services
 
-<details>
-<summary>🏢 Hall Services</summary>
-
-### Hall Features
+#### Hall Features
 
 ![Hall Features](frontend/imgs/hall-feature.png)
 
-### Find Hall Seat
+#### Find Hall Seat
 
 ![Find Hall Seat](frontend/imgs/find-hall-seat.png)
 
-</details>
+### 🪑 Room & Seat Allocation
 
-<details>
-<summary>🪑 Room & Seat Allocation</summary>
-
-### Seat Allocation
+#### Seat Allocation
 
 ![Seat Allocation](frontend/imgs/seat-allocate.png)
 
-</details>
+### 📝 Complaint Management
 
-<details>
-<summary>📝 Complaint Management</summary>
-
-### Submit Complaint
+#### Submit Complaint
 
 ![Submit Complaint](frontend/imgs/submit-complain.png)
 
-### Complaint Management
+#### Complaint Management
 
 ![Complaint Management](frontend/imgs/complain.png)
 
-</details>
+### 📊 Administrative Dashboard
 
-<details>
-<summary>📊 Administrative Dashboard</summary>
-
-### Admin Dashboard
+#### Admin Dashboard
 
 ![Admin Dashboard](frontend/imgs/admin-dashboard.png)
 
-</details>
+### 📄 Other Forms
 
-<details>
-<summary>📄 Other Forms</summary>
-
-### Submit Form
+#### Submit Form
 
 ![Submit Form](frontend/imgs/submit-form.png)
-
-</details>
-
 ---
-
 
 ## 📁 Project Structure
 
